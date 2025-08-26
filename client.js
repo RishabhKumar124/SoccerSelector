@@ -1,82 +1,107 @@
-const socket = io();
-
-let currentIndex = 0;
-let forward = true;
-let teams = {
-  A: [],
-  B: [],
-  C: []
-};
-
-const captains = ["Younus", "Seethaler", "Connor"];
-const teamOrder = ["A", "B", "C"];
+// Captains / team order
+const teamOrder = ["A","B","C","D"]; // snake sequence logic below
 const teamNames = {
   A: "Team Harshil",
   B: "Team Seethaler",
-  C: "Team Connor"
+  C: "Team Connor",
+  D: "Team Stewart",
 };
 
-socket.on("connect", () => {
-  socket.emit("requestPlayers");
-});
+// Player pool (from your message)
+const PLAYERS = [
+  // Group 1
+  "Rhishik (M)","Fransisco","Ali","Tanmay","Naveen","Mike","David","Eugene","Andy",
+  // Group 2
+  "Danny(FW)","Gabriel","Ilia","Amine","Will","Sam","Akshay","Karthik","Anton","Rodrigo",
+  // Group 3
+  "Kaeden (DEF)","Rishabh","Bassil","Muntaser","Eric","Sid","Nanu"
+];
 
-socket.on("init", (players) => {
-  updatePlayerPool(players.filter(p => !captains.includes(p)));
-  updateTeams();
-});
+// State
+let teams = { A: [], B: [], C: [], D: [] };
+let pool = [...PLAYERS];
+let turnIdx = 0;     // index into teamOrder for current team
+let forward = true;  // snake direction
 
-socket.on("update", ({ teams: newTeams, players }) => {
-  teams = newTeams;
-  updatePlayerPool(players.filter(p => !captains.includes(p)));
-  updateTeams();
-});
+function currentTeamKey(){ return teamOrder[turnIdx]; }
 
-socket.on("turn", ({ index, dir }) => {
-  currentIndex = index;
-  forward = dir;
-  updateCurrentTurn();
-});
-
-function currentTeam() {
-  return teamOrder[currentIndex];
+function advanceTurn() {
+  // Snake draft: 0→1→2→3→3→2→1→0→0→1...
+  if (forward) {
+    if (turnIdx < teamOrder.length - 1) {
+      turnIdx++;
+    } else {
+      forward = false; // bounce at the end
+    }
+  }
+  if (!forward) {
+    if (turnIdx > 0) {
+      turnIdx--;
+    } else {
+      forward = true; // bounce at the start
+    }
+  }
+  updateCurrentTeam();
 }
 
-function updateCurrentTurn() {
-  const team = currentTeam();
-  document.getElementById("current-team").innerText = `Current turn: ${teamNames[team]}`;
+function updateCurrentTeam() {
+  const el = document.getElementById("current-team");
+  el.textContent = `Current turn: ${teamNames[currentTeamKey()]}`;
 }
 
-function updatePlayerPool(players) {
+function renderPool() {
   const poolDiv = document.getElementById("player-pool");
   poolDiv.innerHTML = "";
-  players.forEach(p => {
+  pool.forEach(p => {
     const div = document.createElement("div");
-    div.className = "player";
-    div.innerText = p;
+    div.className = "player pool";
+    div.textContent = p;
     div.onclick = () => {
-      const team = currentTeam();
-      socket.emit("pickPlayer", { player: p, team });
+      const t = currentTeamKey();
+      // move from pool -> team
+      teams[t].push(p);
+      pool = pool.filter(x => x !== p);
+      renderAll();
+      advanceTurn();
     };
     poolDiv.appendChild(div);
   });
 }
 
-function updateTeams() {
-  for (const [key, playerList] of Object.entries(teams)) {
-    const teamDiv = document.getElementById("team-" + key);
-    teamDiv.innerHTML = "";
-    playerList.forEach(p => {
+function renderTeams() {
+  for (const k of Object.keys(teams)) {
+    const box = document.getElementById("team-" + k);
+    box.innerHTML = "";
+    teams[k].forEach(p => {
       const div = document.createElement("div");
-      div.className = `player team-${key}`;
-      div.innerText = p;
+      div.className = `player team-${k}`;
+      div.textContent = p;
+      // allow undo: click to return to pool
       div.onclick = () => {
-        socket.emit("returnToPool", { player: p, fromTeam: key });
+        teams[k] = teams[k].filter(x => x !== p);
+        pool.push(p);
+        renderAll();
       };
-      teamDiv.appendChild(div);
+      box.appendChild(div);
     });
   }
 }
 
-function resetDraft() {
-  socket.emit("resetDraft");
+function renderAll() {
+  updateCurrentTeam();
+  renderPool();
+  renderTeams();
 }
+
+function resetDraft() {
+  teams = { A: [], B: [], C: [], D: [] };
+  pool = [...PLAYERS];
+  turnIdx = 0;
+  forward = true;
+  renderAll();
+}
+
+window.resetDraft = resetDraft;
+
+// init
+document.addEventListener("DOMContentLoaded", renderAll);
