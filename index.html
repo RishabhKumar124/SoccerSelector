@@ -3,109 +3,24 @@
 <head>
   <title>Live Soccer Draft</title>
   <button onclick="resetDraft()" style="margin-bottom: 1rem;">Reset Draft</button>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="client.js" defer></script>
+  <script src="client-static.js" defer></script>
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 2rem;
-      margin: 0;
-      background-color: #f4f4f4;
-      text-align: center;
-    }
-
-    h1 {
-      margin-bottom: 0.5rem;
-    }
-
-    #current-team {
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin-bottom: 2rem;
-    }
-
-    .teams-container {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 3rem;
-      flex-wrap: wrap;
-    }
-
-    .team-column {
-      width: 30%;
-      background: #ffffff;
-      padding: 1rem;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      min-height: 120px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    .team-column h3 {
-      margin-bottom: 0.5rem;
-    }
-
-    .player-box {
-      min-height: 60px;
-    }
-
-    .pool-section {
-      margin-top: 2rem;
-      background: #ffffff;
-      padding: 1rem;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    .player-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0.75rem;
-      margin-top: 1rem;
-    }
-
-    .player {
-      padding: 0.6rem;
-      background: #e8f4ff;
-      border: 1px solid #aaa;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-
-    .player:hover {
-      background-color: #cde9ff;
-    }
-
-    .disabled {
-      background-color: #ddd;
-      color: #888;
-      cursor: not-allowed;
-    }
-    .player.team-A {
-      background-color: black;
-      color: white;
-      border-color: #333;
-    }
-
-    .player.team-B {
-      background-color: green;
-      color: white;
-      border-color: darkgreen;
-    }
-
-    .player.team-C {
-      background-color: blue;
-      color: white;
-      border-color: darkblue;
-    }
-
-    .player.pool {
-      background-color: #e8f4ff;
-      color: black;
-      border-color: #aaa;
-    }
+    body { font-family: sans-serif; padding: 2rem; margin:0; background:#f4f4f4; text-align:center; }
+    h1 { margin-bottom:0.5rem; }
+    #current-team { font-size:1.2rem; font-weight:bold; margin-bottom:2rem; }
+    .teams-container { display:flex; justify-content:space-around; gap:1rem; margin-bottom:3rem; flex-wrap:wrap; }
+    .team-column { flex:1 1 240px; max-width:25%; background:#fff; padding:1rem; border:2px solid #ccc; border-radius:8px; min-height:120px; box-shadow:0 2px 5px rgba(0,0,0,0.05); }
+    .team-column h3 { margin-bottom:0.5rem; }
+    .player-box { min-height:60px; }
+    .pool-section { margin-top:2rem; background:#fff; padding:1rem; border:2px solid #ccc; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.05); }
+    .player-grid { display:grid; grid-template-columns: repeat(5, 1fr); gap:0.75rem; margin-top:1rem; }
+    .player { padding:0.6rem; background:#e8f4ff; border:1px solid #aaa; border-radius:4px; cursor:pointer; transition:background-color 0.2s ease; }
+    .player:hover { background-color:#cde9ff; }
+    .player.team-A { background:black; color:white; border-color:#333; }
+    .player.team-B { background:green; color:white; border-color:darkgreen; }
+    .player.team-C { background:blue; color:white; border-color:darkblue; }
+    .player.team-D { background:purple; color:white; border-color:indigo; }
+    .player.pool { background-color:#e8f4ff; color:black; border-color:#aaa; }
   </style>
 </head>
 <body>
@@ -124,6 +39,10 @@
     <div class="team-column">
       <h3>Team Connor</h3>
       <div id="team-C" class="player-box"></div>
+    </div>
+    <div class="team-column">
+      <h3>Team Stewart</h3>
+      <div id="team-D" class="player-box"></div>
     </div>
   </div>
 
