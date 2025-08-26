@@ -1,10 +1,10 @@
 // Captains / team order
 const teamOrder = ["A","B","C","D"]; // snake sequence logic below
 const teamNames = {
-  A: "Team Harshil",
-  B: "Team Seethaler",
-  C: "Team Connor",
-  D: "Team Stewart",
+  A: "Team A",
+  B: "Team B",
+  C: "Team C",
+  D: "Team D",
 };
 
 // Player pool (from your message)
