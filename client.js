@@ -10,11 +10,11 @@ const teamNames = {
 // Player pool (from your message)
 const PLAYERS = [
   // Group 1
-  "Rhishik (M)","Fransisco","Ali","Tanmay","Naveen","Mike","David","Eugene","Andy",
+  "Rishik(M)","Fransisco(M)","Ali(M)","Tanmay(M)","Naveen(M)","Mike(M)","David(M)","Eugene(M)","Andy(M)",
   // Group 2
-  "Danny(FW)","Gabriel","Ilia","Amine","Will","Sam","Akshay","Karthik","Anton","Rodrigo",
+  "Danny(FW)","Gabriel(FW)","Ilia(FW)","Amine(FW)","Will(FW)","Sam(FW)","Akshay(FW)","Karthik(FW)","Anton(FW)","Rodrigo(FW)",
   // Group 3
-  "Kaeden (DEF)","Rishabh","Bassil","Muntaser","Eric","Sid","Nanu"
+  "Kaeden(DEF)","Rishabh(DEF)","Bassil(DEF)","Muntaser(DEF)","Eric(DEF)","Sid(DEF)","Nanu(DEF)"
 ];
 
 // State
