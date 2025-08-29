@@ -26,19 +26,22 @@ let forward = true;  // snake direction
 function currentTeamKey(){ return teamOrder[turnIdx]; }
 
 function advanceTurn() {
-  // Snake draft: 0→1→2→3→3→2→1→0→0→1...
+  // Snake where ends get back-to-back picks.
   if (forward) {
-    if (turnIdx < teamOrder.length - 1) {
-      turnIdx++;
+    if (turnIdx === teamOrder.length - 1) {
+      // At last team (D): flip direction, stay on D for back-to-back.
+      forward = false;
+      // turnIdx unchanged
     } else {
-      forward = false; // bounce at the end
+      turnIdx += 1;
     }
-  }
-  if (!forward) {
-    if (turnIdx > 0) {
-      turnIdx--;
+  } else {
+    if (turnIdx === 0) {
+      // At first team (A): flip direction, stay on A for back-to-back.
+      forward = true;
+      // turnIdx unchanged
     } else {
-      forward = true; // bounce at the start
+      turnIdx -= 1;
     }
   }
   updateCurrentTeam();
