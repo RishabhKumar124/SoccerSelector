@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Live Snake Draft</title>
+  <style>
+    body { font-family:sans-serif; padding:2rem; margin:0; background:#f4f4f4; text-align:center; }
+    .teams-container { display:flex; justify-content:space-around; gap:1rem; margin-bottom:3rem; flex-wrap:wrap; }
+    .team-column { flex:1 1 240px; max-width:25%; background:#fff; padding:1rem; border:2px solid #ccc; border-radius:8px; min-height:120px; }
+    .player-grid { display:grid; grid-template-columns: repeat(5, 1fr); gap:0.75rem; margin-top:1rem; }
+    .player { padding:0.6rem; background:#e8f4ff; border:1px solid #aaa; border-radius:4px; cursor:pointer; }
+    .player.team-A { background:black; color:white; }
+    .player.team-B { background:green; color:white; }
+    .player.team-C { background:blue; color:white; }
+    .player.team-D { background:purple; color:white; }
+  </style>
+</head>
+<body>
+  <h1>Live Snake Draft</h1>
+  <button onclick="resetDraft()" style="margin-bottom:1rem;">Reset Draft</button>
+  <div id="current-team">Current turn: Team A</div>
+
+  <div class="teams-container">
+    <div class="team-column"><h3>Team A</h3><div id="team-A" class="player-box"></div></div>
+    <div class="team-column"><h3>Team B</h3><div id="team-B" class="player-box"></div></div>
+    <div class="team-column"><h3>Team C</h3><div id="team-C" class="player-box"></div></div>
+    <div class="team-column"><h3>Team D</h3><div id="team-D" class="player-box"></div></div>
+  </div>
+
+  <div class="pool-section">
+    <h3>Available Players</h3>
+    <div id="player-pool" class="player-grid"></div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js" defer></script>
+</body>
+</html>
